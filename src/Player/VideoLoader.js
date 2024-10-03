@@ -58,7 +58,6 @@ export default class VideoLoader {
         let iframe = doc.getElementById('watch-embed');
         let src = iframe.getAttribute('src');
         let config = await this.fetchOTTConfig(src);
-        console.log('loadVideo', config.config_url, this.player);
-        await this.player.loadVideo(config.config_url);
+        await this.player.loadVideo(config);
     }
 }

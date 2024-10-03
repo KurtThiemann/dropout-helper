@@ -108,8 +108,8 @@ logger.debug('Content script running.');
         }, 1000);
     }
 
-    console.log('Creating video loader');
     let videoLoader = new VideoLoader(player, worker, window);
     self.videoLoader = videoLoader;
+    console.log('Creating video loader', videoLoader);
 })();
 

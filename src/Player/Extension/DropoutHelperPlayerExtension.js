@@ -1,22 +1,32 @@
 import OttApiExtension from "./OttApiExtension.js";
 import OttApiMessage from "../OttApiMessage.js";
+import OTTData from "../OTTData.js";
 
 export default class DropoutHelperPlayerExtension extends OttApiExtension {
     /** @type {HTMLVideoElement} */ video;
     /** @type {Object} */ player;
     /** @type {?number} */ previousRate = null;
+    /** @type {PlayerConfigPatcher} */ playerConfigPatcher;
     /** @type {function(DropoutHelperPlayerExtension)} */ handleInit = null;
 
     /**
      * @param {function(DropoutHelperPlayerExtension)} handleInit
+     * @param {PlayerConfigPatcher} playerConfigPatcher
      * @param {Window} inboundTarget
      * @param {Window} outboundTarget
      * @param {string} outboundOrigin
      */
-    constructor(handleInit, inboundTarget, outboundTarget, outboundOrigin = '*') {
+    constructor(
+        handleInit,
+        playerConfigPatcher,
+        inboundTarget,
+        outboundTarget,
+        outboundOrigin = '*'
+    ) {
         super('dh', inboundTarget, outboundTarget, outboundOrigin);
 
         this.handleInit = handleInit;
+        this.playerConfigPatcher = playerConfigPatcher;
         this.registerHandler('setPlaybackRate', this.handleSetPlaybackRate.bind(this));
         this.registerHandler('getPlaybackRate', this.handleGetPlaybackRate.bind(this));
         this.registerHandler('loadVideo', this.handleLoadVideo.bind(this));
@@ -87,8 +97,9 @@ export default class DropoutHelperPlayerExtension extends OttApiExtension {
      * @returns {Promise<?OttApiMessage>}
      */
     async handleLoadVideo(message) {
-        console.log('loadVideo-ext', message.getParameters(), this.player);
-        await this.player.loadVideo(message.getParameters()[0]);
+        let ottData = new OTTData(message.getParameters()[0]);
+        this.playerConfigPatcher.setOttData(ottData);
+        await this.player.loadVideo(ottData.getConfigUrl());
         return message.respond(null);
     }
 }
