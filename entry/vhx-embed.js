@@ -1,6 +1,7 @@
-import PlaybackRateExtension from "../src/Player/Extension/PlaybackRateExtension.js";
+import DropoutHelperPlayerExtension from "../src/Player/Extension/DropoutHelperPlayerExtension.js";
 import Logger from "../src/Logger.js";
 import Storage from "../src/Storage/Storage.js";
+import OttApiMessage from "../src/Player/OttApiMessage.js";
 
 (async () => {
     let storage = new Storage('_dropout_helper');
@@ -20,13 +21,31 @@ import Storage from "../src/Storage/Storage.js";
     logger.debug('Content script running.');
     const referer = document.referrer;
     const origin = referer ? new URL(referer).origin : '*';
-
     const parent = window.parent;
 
+    let extension = null;
     if (parent) {
-        new PlaybackRateExtension(window, parent, origin);
+        extension = new DropoutHelperPlayerExtension(handleExtensionInit, window, parent, origin);
     } else {
         logger.error('No parent window found');
+    }
+
+    // Overwrite the VimeoPlayer constructor to keep track of all instances
+    if (typeof self.VimeoPlayer !== 'undefined') {
+        self.VimeoPlayer = new Proxy(VimeoPlayer, {
+            construct(target, argumentsList, newTarget) {
+                let instance = Reflect.construct(target, argumentsList, newTarget);
+                extension?.setPlayer(instance);
+                return instance;
+            }
+        });
+    }
+
+    /**
+     * @param {DropoutHelperPlayerExtension} ext
+     */
+    function handleExtensionInit(ext) {
+        ext.setVideo(document.querySelector('video'));
     }
 
     // Fix player settings storage
@@ -49,6 +68,18 @@ import Storage from "../src/Storage/Storage.js";
             return res;
         }
         return settings;
+    };
+
+    let origParse = JSON.parse;
+    JSON.parse = function (text) {
+        let obj = origParse(text);
+        let settings;
+        try {
+            settings = handleSettingsObject(obj);
+        } catch (e) {
+            logger.error('Failed to handle settings object', e);
+        }
+        return settings ?? obj;
     };
 
     /**

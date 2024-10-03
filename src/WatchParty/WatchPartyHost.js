@@ -31,7 +31,7 @@ export default class WatchPartyHost extends WatchPartyController {
         this.player.addEventListener('seeked', this._publishUpdate);
         this.player.addEventListener('play', this._publishUpdate);
         this.player.addEventListener('pause', this._publishUpdate);
-        this.player.addEventListener('playback-rate:ratechange', this._publishUpdate);
+        this.player.addEventListener('dh:ratechange', this._publishUpdate);
     }
 
     /**
@@ -85,7 +85,7 @@ export default class WatchPartyHost extends WatchPartyController {
         this.player.removeEventListener('seeked', this._publishUpdate);
         this.player.removeEventListener('play', this._publishUpdate);
         this.player.removeEventListener('pause', this._publishUpdate);
-        this.player.removeEventListener('playback-rate:ratechange', this._publishUpdate);
+        this.player.removeEventListener('dh:ratechange', this._publishUpdate);
     }
 
     /**

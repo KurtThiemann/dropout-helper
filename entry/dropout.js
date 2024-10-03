@@ -2,6 +2,8 @@ import Storage from "../src/Storage/Storage.js";
 import Player from "../src/Player/Player.js";
 import WatchPartySection from "../src/UI/WatchPartySection.js";
 import Logger from "../src/Logger.js";
+import WorkerMessageApiClient from "../src/Worker/WorkerMessageApiClient.js";
+import VideoLoader from "../src/Player/VideoLoader.js";
 
 let seriesLink = document.querySelector('a.custom-nav-series');
 if (seriesLink) {
@@ -13,6 +15,7 @@ logger.debug('Content script running.');
 
 (async () => {
     let storage = new Storage('_dropout_helper');
+    let worker = new WorkerMessageApiClient(chrome);
     let iframe = document.getElementById('watch-embed');
     if (iframe === null) {
         return;
@@ -47,7 +50,7 @@ logger.debug('Content script running.');
         storage.set('muted', await player.isMuted());
     });
 
-    player.addEventListener('playback-rate:ratechange', async e => {
+    player.addEventListener('dh:ratechange', async e => {
         let rate = e.getData();
         if (rate === storage.get('playbackRate')) {
             return;
@@ -58,7 +61,7 @@ logger.debug('Content script running.');
 
     player.addEventListener('loadstart', async e => {
         // Set the playback rate as soon as the extension is initialized
-        player.addEventListener('playback-rate:init', () => {
+        player.addEventListener('dh:init', () => {
             if (storage.has('playbackRate')) {
                 player.setPlaybackRate(storage.get('playbackRate'));
             }
@@ -104,5 +107,9 @@ logger.debug('Content script running.');
             storage.set('subtitles', id);
         }, 1000);
     }
+
+    console.log('Creating video loader');
+    let videoLoader = new VideoLoader(player, worker, window);
+    self.videoLoader = videoLoader;
 })();
 

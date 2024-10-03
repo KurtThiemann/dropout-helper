@@ -22,7 +22,7 @@ export default class ScheduledSession extends WatchPartyController {
         this.player.addEventListener('loadeddata', this._updatePlayer);
         this.player.addEventListener('play', this._updatePlayer);
         this.player.addEventListener('pause', this._updatePlayer);
-        this.player.addEventListener('playback-rate:ratechange', this._updatePlayer);
+        this.player.addEventListener('dh:ratechange', this._updatePlayer);
     }
 
     /**
@@ -82,7 +82,7 @@ export default class ScheduledSession extends WatchPartyController {
         this.player.removeEventListener('loadeddata', this._updatePlayer);
         this.player.removeEventListener('play', this._updatePlayer);
         this.player.removeEventListener('pause', this._updatePlayer);
-        this.player.removeEventListener('playback-rate:ratechange', this._updatePlayer);
+        this.player.removeEventListener('dh:ratechange', this._updatePlayer);
     }
 
     /**

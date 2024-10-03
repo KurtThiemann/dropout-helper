@@ -29,7 +29,7 @@ export default class WatchPartyMember extends WatchPartyController {
         this.player.addEventListener('loadeddata', this._applyScheduledUpdate);
         this.player.addEventListener('play', this._applyStatus);
         this.player.addEventListener('pause', this._applyStatus);
-        this.player.addEventListener('playback-rate:ratechange', this._applyStatus);
+        this.player.addEventListener('dh:ratechange', this._applyStatus);
     }
 
     async init() {
@@ -77,7 +77,7 @@ export default class WatchPartyMember extends WatchPartyController {
         this.player.removeEventListener('loadeddata', this._applyScheduledUpdate);
         this.player.removeEventListener('play', this._applyStatus);
         this.player.removeEventListener('pause', this._applyStatus);
-        this.player.removeEventListener('playback-rate:ratechange', this._applyStatus);
+        this.player.removeEventListener('dh:ratechange', this._applyStatus);
     }
 
     /**

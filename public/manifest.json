@@ -15,6 +15,9 @@
     "https://www.dropout.tv/*",
     "https://embed.vhx.tv/videos/*"
   ],
+  "permissions": [
+    "declarativeNetRequestWithHostAccess"
+  ],
   "content_scripts": [
     {
       "matches": [
@@ -47,6 +50,18 @@
       ]
     }
   ],
+  "background": {
+    "service_worker": "js/service-worker.js"
+  },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
   "browser_specific_settings": {
     "gecko": {
       "id": "dropout-helper@kurtthiemann.com"

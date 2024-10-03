@@ -352,13 +352,21 @@ export default class Player extends EventTarget {
      * @returns {Promise<number>}
      */
     async setPlaybackRate(rate) {
-        return await this.callMethod('playback-rate:setPlaybackRate', [rate]);
+        return await this.callMethod('dh:setPlaybackRate', [rate]);
     }
 
     /**
      * @returns {Promise<number>}
      */
     async getPlaybackRate() {
-        return await this.callMethod('playback-rate:getPlaybackRate');
+        return await this.callMethod('dh:getPlaybackRate');
+    }
+
+    /**
+     * @param {string|number|Object} identifier
+     * @returns {Promise<*>}
+     */
+    async loadVideo(identifier) {
+        return await this.callMethod('dh:loadVideo', [identifier]);
     }
 }
