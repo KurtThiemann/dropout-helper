@@ -13,7 +13,7 @@ export default class OttApiMessage {
         if (typeof data === 'string') {
             try {
                 message = OttApiMessage.fromJson(data);
-            }catch (e) {
+            } catch (e) {
                 return null;
             }
         } else if (typeof data === 'object') {

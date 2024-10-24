@@ -137,7 +137,8 @@ export default class Socket extends EventTarget {
      */
     startPinging() {
         clearInterval(this.pingInterval);
-        this.updatePing().catch(() => {});
+        this.updatePing().catch(() => {
+        });
         this.pingInterval = setInterval(() => this.updatePing(), 10000);
         return this;
     }

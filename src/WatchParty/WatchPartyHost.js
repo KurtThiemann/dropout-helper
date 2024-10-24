@@ -18,7 +18,7 @@ export default class WatchPartyHost extends WatchPartyController {
      * @param {?string} id
      * @param {?string} secret
      */
-    constructor(player, storage,  title = null, id = null, secret = null) {
+    constructor(player, storage, title = null, id = null, secret = null) {
         super(id, player, storage);
         this.secret = secret;
         this.title = title;
