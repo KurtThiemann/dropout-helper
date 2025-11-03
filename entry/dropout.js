@@ -47,6 +47,15 @@ logger.debug('Content script running.');
         storage.set('muted', await player.isMuted());
     });
 
+    let autoplay = true;
+    // check the browser's autoplay setting if that feature is supported (currently only on firefox)
+    if (navigator.getAutoplayPolicy) {
+        if (navigator.getAutoplayPolicy("mediaelement") === "disallowed") {
+            logger.log("Autoplay policy is set to disallowed. Pausing the player to prevent Firefox from muting the video.")
+            autoplay = false;
+        }
+    }
+
     player.addEventListener('playback-rate:ratechange', async e => {
         let rate = e.getData();
         if (rate === storage.get('playbackRate')) {
@@ -57,6 +66,10 @@ logger.debug('Content script running.');
     });
 
     player.addEventListener('loadstart', async e => {
+        if (!autoplay) {
+            player.pause()
+        }
+
         // Set the playback rate as soon as the extension is initialized
         player.addEventListener('playback-rate:init', () => {
             if (storage.has('playbackRate')) {

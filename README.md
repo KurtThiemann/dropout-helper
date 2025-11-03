@@ -4,6 +4,8 @@ your volume settings and enabled subtitles. Additionally, it includes a watch pa
 easily watching videos in sync with other people. It also includes a custom client for the 
 Vimeo OTT player API because the official one isn't great.
 
+It will also stop Dropout videos from autostarting in Firefox (since the default "Block autoplay" browser policy is implemented) until you allow autoplay on watch.Dropout.tv.
+
 In theory, this addon could be extended to work on any Vimeo OTT platform, 
 but nobody else really uses Vimeo OTT, so I'm not going to bother.
 
@@ -24,6 +26,12 @@ Firefox: https://addons.mozilla.org/en-US/firefox/addon/dropouthelper/
 1. Go to Dropout and start watching a video
 2. Set your volume and subtitles
 3. Done
+
+If you are using Firefox and you want the videos to start automatically again, you need to give Dropout permission to do so:
+
+<img width="924" height="42" alt="Image" src='./docs/assets/permissions-panel.png' />
+
+Click on this button and then select "Allow Audio and Video". This adds an exception which allows Dropout to autoplay videos with sound.
 
 ## Building
 1. Clone the repository
