@@ -1,13 +1,18 @@
 # DropoutHelper
-This is a simple Chrome/Firefox extension that makes [Dropout](https://dropout.tv) remember
-your volume settings and enabled subtitles. Additionally, it includes a watch party feature that allows for
+This is a simple Chrome/Firefox extension that adds a number of small QOL features for [Dropout](https://dropout.tv).
+Additionally, it includes a watch party feature that allows for
 easily watching videos in sync with other people. It also includes a custom client for the 
 Vimeo OTT player API because the official one isn't great.
 
-It will also stop Dropout videos from autostarting in Firefox (since the default "Block autoplay" browser policy is implemented) until you allow autoplay on watch.Dropout.tv.
-
 In theory, this addon could be extended to work on any Vimeo OTT platform, 
 but nobody else really uses Vimeo OTT, so I'm not going to bother.
+
+## Features
+- ~~Save subtitle and volume settings~~
+  - This has been fixed by Vimeo and no longer requires this extension
+- Save video playback rate
+- Stop videos from starting automatically in Firefox until you allow autoplay on watch.dropout.tv
+- Watch party feature that allows you to watch videos in sync with other people
 
 ## Installation
 

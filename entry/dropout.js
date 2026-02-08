@@ -34,19 +34,6 @@ logger.debug('Content script running.');
     let watchPartySection = new WatchPartySection(player, storage, title);
     column.insertBefore(watchPartySection.getHtml(), shareTools);
 
-    // The volumechange even is emitted whenever the volume is changed or the player is muted/unmuted
-    // It does, however, not include the muted state, so we have to check that separately
-    player.addEventListener('volumechange', async e => {
-        let volume = e.getData().volume;
-        let muted = await player.isMuted();
-        if (volume === storage.get('volume') && muted === storage.get('muted')) {
-            return;
-        }
-
-        storage.set('volume', e.getData().volume);
-        storage.set('muted', await player.isMuted());
-    });
-
     let autoplay = true;
     // check the browser's autoplay setting if that feature is supported (currently only on firefox)
     if (navigator.getAutoplayPolicy) {
@@ -78,24 +65,6 @@ logger.debug('Content script running.');
         });
         player.initExtension('playback-rate').catch(e => logger.error('Failed to init playback rate extension', e));
 
-        if (storage.has('volume')) {
-            logger.debug('Setting volume', storage.get('volume'));
-            player.setVolume(storage.get('volume'));
-        }
-
-        if (storage.has('muted')) {
-            logger.debug('Setting muted', storage.get('muted'));
-            await player.setMuted(storage.get('muted'));
-        }
-
-        if (storage.has('subtitles')) {
-            logger.debug('Setting subtitles', storage.get('subtitles'));
-            await player.setSubtitle(storage.get('subtitles'));
-        }
-
-        // Only start watching subtitles after the player has loaded
-        startWatchingSubtitles();
-
         if (self.location.hash.startsWith('#dhparty-')) {
             let id = self.location.hash.slice(9);
             await watchPartySection.join(id);
@@ -104,18 +73,5 @@ logger.debug('Content script running.');
             await watchPartySection.joinScheduledSession(id);
         }
     });
-
-    function startWatchingSubtitles() {
-        // There is no event for changing subtitles, so we have to poll for it
-        setInterval(async () => {
-            let captions = await player.getSubtitles();
-            let active = captions.find(caption => caption.mode === 'showing');
-            let id = active ? active.language : null;
-            if (storage.get('subtitles') === id) {
-                return;
-            }
-            storage.set('subtitles', id);
-        }, 1000);
-    }
 })();
 

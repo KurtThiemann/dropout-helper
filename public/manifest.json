@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Dropout Helper",
   "description": "Dropout but it saves your volume and subtitle settings. It also adds Watch Parties.",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "action": {
     "default_icon": "icons/dropout.png",
     "default_popup": "popup/popup.html"
