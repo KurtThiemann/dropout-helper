@@ -1,7 +1,7 @@
 {
   "name": "dropout-addon",
   "version": "1.9.1",
-  "description": "Dropout but it saves your volume and subtitle settings",
+  "description": "Small quality of life tweaks and watch parties for Dropout.tv",
   "type": "module",
   "main": "index.js",
   "scripts": {

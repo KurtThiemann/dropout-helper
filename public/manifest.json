@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Dropout Helper",
-  "description": "Small quality of life tweeks and watch parties for Dropout.tv",
+  "description": "Small quality of life tweaks and watch parties for Dropout.tv",
   "version": "1.9.1",
   "action": {
     "default_icon": "icons/dropout.png",
