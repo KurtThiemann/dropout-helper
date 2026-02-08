@@ -1,6 +1,6 @@
 {
   "name": "dropout-addon",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "Dropout but it saves your volume and subtitle settings",
   "type": "module",
   "main": "index.js",
